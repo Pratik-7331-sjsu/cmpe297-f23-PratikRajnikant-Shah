@@ -37,8 +37,8 @@ main(int argc, char* argv[])
     std::string PacketSize = "1024";
 
     CommandLine cmd(__FILE__);
-    cmd.AddValue("datarate", "Data rate of channel", datarate);
-    cmd.AddValue("packetSize", "Packet Size of message", packetSize);
+    cmd.AddValue("datarate", "Data rate of channel", DataRate);
+    cmd.AddValue("packetSize", "Packet Size of message", PacketSize);
     cmd.Parse(argc, argv);
 
     Time::SetResolution(Time::NS);
@@ -49,7 +49,7 @@ main(int argc, char* argv[])
     nodes.Create(2);
 
     PointToPointHelper pointToPoint;
-    pointToPoint.SetDeviceAttribute("DataRate", StringValue(datarate));
+    pointToPoint.SetDeviceAttribute("DataRate", StringValue(DataRate));
     pointToPoint.SetChannelAttribute("Delay", StringValue("1ms"));
 
     NetDeviceContainer devices;
@@ -72,7 +72,7 @@ main(int argc, char* argv[])
     UdpEchoClientHelper echoClient(interfaces.GetAddress(1), 9);
     echoClient.SetAttribute("MaxPackets", UintegerValue(1));
     echoClient.SetAttribute("Interval", TimeValue(Seconds(1.0)));
-    echoClient.SetAttribute("PacketSize", UintegerValue(std::stoi(packetSize)));
+    echoClient.SetAttribute("PacketSize", UintegerValue(std::stoi(PacketSize)));
 
     ApplicationContainer clientApps = echoClient.Install(nodes.Get(0));
     clientApps.Start(Seconds(2.0));
